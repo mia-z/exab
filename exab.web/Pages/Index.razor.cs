@@ -10,6 +10,7 @@ using System.Timers;
 using System.Diagnostics;
 using Microsoft.JSInterop;
 using Blazored.LocalStorage;
+using exab.web.Services.EventArgs;
 
 namespace exab.web.Pages
 {
@@ -21,10 +22,15 @@ namespace exab.web.Pages
         [Inject]
         protected ILocalStorageService LocalStorage { get; set; }
 
+        [Inject]
+        IDynamicNavigator Nav { get; set; }
+
         public int Counter = 0;
+        public string Current { get; set; } = Globals.CurrentPage;
 
         protected override void OnInitialized()
         {
+            Debug.WriteLine(Globals.CurrentPage);
             base.OnInitialized();
         }
 
@@ -32,7 +38,7 @@ namespace exab.web.Pages
         {
             if (firstRender)
             {
-                
+                Nav.Navigate += NavEvent;
             }
             base.OnAfterRender(firstRender);
         }
@@ -46,11 +52,18 @@ namespace exab.web.Pages
                 if (disposing)
                 {
                     Debug.WriteLine("Disposing");
+                    Nav.Navigate -= NavEvent;
                 }
 
                 disposedValue = true;
             }
         }
+
+        private void NavEvent(object sender, NavigationEventArgs e)
+        {
+            Current = e.Page;
+            InvokeAsync(StateHasChanged);
+        }    
 
         public void Dispose()
         {

@@ -7,6 +7,8 @@ namespace exab.web
 {
     public static class Globals
     {
-        public static int Counter = 0;
+        public static int Counter { get; set; } = 0;
+        public static bool HasCharacter { get;  private set; }
+        public static string CurrentPage { get; set; }
     }
 }

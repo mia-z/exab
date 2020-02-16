@@ -1,2 +1,16 @@
 ﻿@page "/"
+@using System.Diagnostics
 
+<h3>Index</h3>
+@switch (Current)
+{
+    case "Create":
+        <Create />
+        <p>Wow!</p>
+        break;
+    case "Fight":
+        <Player />
+        <p>Wow again!</p>
+        break;
+}
+ @Current
