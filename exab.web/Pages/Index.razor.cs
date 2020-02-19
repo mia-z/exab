@@ -1,16 +1,11 @@
-﻿using exab.web.Services;
+﻿using Blazored.LocalStorage;
+using Common.Models;
 using exab.web.Services.Contracts;
+using exab.web.Services.EventArgs;
 using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Timers;
 using System.Diagnostics;
-using Microsoft.JSInterop;
-using Blazored.LocalStorage;
-using exab.web.Services.EventArgs;
+using System.Threading.Tasks;
 
 namespace exab.web.Pages
 {
@@ -23,18 +18,19 @@ namespace exab.web.Pages
         protected ILocalStorageService LocalStorage { get; set; }
 
         [Inject]
-        IDynamicNavigator Nav { get; set; }
+        protected IDynamicNavigator Nav { get; set; }
 
-        public int Counter = 0;
-        public string Current { get; set; } = Globals.CurrentPage;
+        [Parameter]
+        public string Current { get; set; }
+
+        public string Counter = "";
 
         protected override void OnInitialized()
         {
-            Debug.WriteLine(Globals.CurrentPage);
-            base.OnInitialized();
+            base.OnInitializedAsync();
         }
 
-        protected override void OnAfterRender(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
@@ -42,6 +38,9 @@ namespace exab.web.Pages
             }
             base.OnAfterRender(firstRender);
         }
+
+        private string GetName() => Globals.User == null ? "No name" : Globals.User.Name;
+        
 
         private bool disposedValue = false; // To detect redundant calls
 
@@ -54,7 +53,6 @@ namespace exab.web.Pages
                     Debug.WriteLine("Disposing");
                     Nav.Navigate -= NavEvent;
                 }
-
                 disposedValue = true;
             }
         }

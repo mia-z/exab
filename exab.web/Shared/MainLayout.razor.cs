@@ -1,4 +1,6 @@
-﻿using exab.web.Services.Contracts;
+﻿using Blazored.LocalStorage;
+using Common.Models;
+using exab.web.Services.Contracts;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -13,23 +15,26 @@ namespace exab.web.Shared
         [Inject]
         protected IUpdate Updater { get; set; }
 
+        [Inject]
+        protected ILocalStorageService LocalStorage { get; set; }
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
         }
 
-        protected override void OnAfterRender(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
-            {
-
+            {                
+                Globals.User = await LocalStorage.GetItemAsync<User>("userdata");
+                if (Globals.User == null)
+                {
+                    Globals.CurrentPage = "Create";
+                    StateHasChanged();
+                }
             }
             base.OnAfterRender(firstRender);
-        }
-
-        public void Tick(object sender, EventArgs e)
-        {
-            
         }
 
         private bool disposedValue = false; // To detect redundant calls
@@ -42,7 +47,6 @@ namespace exab.web.Shared
                 {
                     Debug.WriteLine("Disposing");
                 }
-
                 disposedValue = true;
             }
         }
@@ -51,7 +55,6 @@ namespace exab.web.Shared
         {
             Dispose(true);
             Debug.WriteLine("Disposed");
-
         }
     }
 }
