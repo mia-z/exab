@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace exab.web.Pages.Components.UI
+namespace exab.web.Pages
 {
-    public partial class Player : ComponentBase
+    public partial class Shop : ComponentBase
     {
-        [Parameter]
-        public int Number { get; set; }
     }
 }

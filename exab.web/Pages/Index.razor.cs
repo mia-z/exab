@@ -23,24 +23,19 @@ namespace exab.web.Pages
         [Parameter]
         public string Current { get; set; }
 
-        public string Counter = "";
-
         protected override void OnInitialized()
         {
             base.OnInitializedAsync();
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender)
             {
                 Nav.Navigate += NavEvent;
             }
             base.OnAfterRender(firstRender);
-        }
-
-        private string GetName() => Globals.User == null ? "No name" : Globals.User.Name;
-        
+        }        
 
         private bool disposedValue = false; // To detect redundant calls
 

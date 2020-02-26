@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using Common.Models;
 using exab.web.Services.Contracts;
+using exab.web.Services.EventArgs;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -18,23 +19,31 @@ namespace exab.web.Shared
         [Inject]
         protected ILocalStorageService LocalStorage { get; set; }
 
-        protected override void OnInitialized()
-        {
-            base.OnInitialized();
-        }
+        [Inject]
+        protected IDynamicNavigator Nav { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
-            {                
+            {
                 Globals.User = await LocalStorage.GetItemAsync<User>("userdata");
                 if (Globals.User == null)
                 {
-                    Globals.CurrentPage = "Create";
-                    StateHasChanged();
+                    NavEvent(this, new NavigationEventArgs { Page = "Create" });
+                } 
+                else
+                {
+                    NavEvent(this, new NavigationEventArgs { Page = "Character" });
                 }
             }
+            await InvokeAsync(StateHasChanged);
             base.OnAfterRender(firstRender);
+        }
+
+        private void NavEvent(object sender, NavigationEventArgs e)
+        {
+            Globals.CurrentPage = e.Page;
+            StateHasChanged();
         }
 
         private bool disposedValue = false; // To detect redundant calls

@@ -1,14 +1,29 @@
 ﻿@page "/"
-
-<h3>Index</h3>
-@switch (Current)
-{
-    case "Create":
-        <Create />
-        <p>Wow!</p>
-        break;
-    case "Fight":
-        <Player />
-        <p>Wow again!</p>
-        break;
-}
+<div class="col-md-6">
+    <div class="container">
+        @switch (Current)
+        {
+            case "Create":
+                <Create />
+                break;
+            case "Character":
+                <Character UserData=@Globals.User />
+                break;
+            case "Rest":
+                <Rest />
+                break;
+            case "Logs":
+                <Logs />
+                break;
+            case "Train":
+                <Train />
+                break;
+            case "Shop":
+                <Shop />
+                break;
+            case "Explore":
+                <Explore />
+                break;
+        }
+    </div>
+</div>

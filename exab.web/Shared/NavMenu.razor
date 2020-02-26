@@ -7,12 +7,12 @@
 <div class="container">
     <div class="row @NavMenuCssClass" @onclick="ToggleNavMenu">
         <ul class="col">
-            <li class="row">
-                <button class="btn btn-block @MenuButtonClass(NavItems[0]) m-1 @ShouldHide(NavItems[0]))" @onclick="() => SetPage(NavItems[0])">@NavItems[0]</button>
-            </li>
-            <li class="row">
-                <button class="btn btn-block @MenuButtonClass(NavItems[1]) m-1 @ShouldHide(NavItems[1])" @onclick="() => SetPage(NavItems[1])">@NavItems[1]</button>
-            </li>
+            @foreach (var i in NavItems)
+            {
+                <li class="row">
+                    <button class="btn btn-block @MenuButtonClass(i) m-1 @ShouldHide(i)" @onclick="() => SetPage(i)">@i</button>
+                </li>
+            }
         </ul>
     </div>
 </div>

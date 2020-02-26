@@ -12,16 +12,16 @@ namespace exab.web.Shared
     public partial class NavMenu : ComponentBase
     {
         [Inject]
-        IDynamicNavigator Nav { get; set; }
-
-        private bool collapseNavMenu = true;
-
-        private string[] NavItems { get; } = { "Create", "Fight" };
-
-        private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+        protected IDynamicNavigator Nav { get; set; }
 
         [Parameter]
         public string CurrentPage { get; set; }
+
+        private bool collapseNavMenu = true;
+
+        private string[] NavItems { get; } = { "Create", "Character", "Train", "Explore", "Shop", "Rest", "Logs" };
+
+        private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
         private void ToggleNavMenu()
         {
@@ -29,15 +29,26 @@ namespace exab.web.Shared
         }
 
         private string MenuButtonClass(string s) => s == Globals.CurrentPage ? "btn-success" : "btn-primary";
-        private string ShouldHide(string loc) =>  loc == "Create" ? "" : "IsHidden";
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        private string ShouldHide(string buttonName)
         {
-            if (firstRender)
+            switch(buttonName)
             {
-
+                case "Create":
+                    if (Globals.CurrentPage == "Create")
+                        return "";
+                    else return "IsHidden";
+                case "Train":
+                case "Explore":
+                case "Shop":
+                case "Rest":
+                case "Character":
+                case "Logs":
+                    if (Globals.CurrentPage != "Create")
+                        return "";
+                    else return "IsHidden";
+                default:
+                    return null;
             }
-            base.OnAfterRender(firstRender);
         }
 
         private void SetPage(string page)
@@ -45,11 +56,6 @@ namespace exab.web.Shared
             Globals.CurrentPage = page;
             var args = new NavigationEventArgs { Page = page };
             Nav.OnNavigate(this, args);
-        }
-
-        protected override bool ShouldRender()
-        {
-            return base.ShouldRender();
         }
     }
 }

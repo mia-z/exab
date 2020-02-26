@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace exab.web.Pages.Components.UI
+namespace exab.web.Pages
 {
-    public partial class Enemy : ComponentBase
+    public partial class Train : ComponentBase
     {
     }
 }
